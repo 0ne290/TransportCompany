@@ -12,8 +12,7 @@ internal static class Program
 
         // Add services to the container.
         builder.Services.AddControllersWithViews();
-        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options => options.LoginPath = new PathString("/login"));
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
         /*builder.Services.AddSingleton<DrinksVendingMachine>(serviceProvider =>
         {
             var optionsBuilder = new DbContextOptionsBuilder<TransportCompanyContext>();
@@ -32,7 +31,7 @@ internal static class Program
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         });
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddCoreAdmin("Administrator");
+        builder.Services.AddCoreAdmin();
 
         var app = builder.Build();
 
@@ -54,7 +53,18 @@ internal static class Program
 
         app.MapControllerRoute(
             name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+            pattern: "{controller=Login}/{action=Index}/{id?}");
+        
+        app.UseCoreAdminCustomAuth(async serviceProvider =>
+        {
+            var httpContext = serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext!;
+            
+            if (httpContext.User.IsInRole("Administrator"))
+                return await Task.FromResult(true);
+            
+            httpContext.Response.Redirect("login/administrator");
+            return await Task.FromResult(false);
+        });
 
         await app.RunAsync();
     }

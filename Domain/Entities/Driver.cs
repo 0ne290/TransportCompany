@@ -1,6 +1,10 @@
-﻿namespace Dal;
+﻿using System.Security.Cryptography;
+using System.Text;
+using Domain.Interfaces;
 
-public partial class Driver
+namespace Dal;
+
+public partial class Driver : IEntity
 {
     public string Guid { get; set; } = null!;
 

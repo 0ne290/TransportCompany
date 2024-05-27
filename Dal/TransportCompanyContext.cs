@@ -79,13 +79,14 @@ public class TransportCompanyContext : DbContext
 
             entity.ToTable("user");
 
-            entity.HasIndex(e => e.Password, "Password_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.Login, "Login_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.Password, "Sha256OfPassword_UNIQUE").IsUnique();
 
             entity.Property(e => e.Login).HasMaxLength(45);
             entity.Property(e => e.Contact).HasMaxLength(45);
             entity.Property(e => e.DefaultAddress).HasMaxLength(45);
             entity.Property(e => e.Name).HasMaxLength(45);
-            entity.Property(e => e.Password).HasMaxLength(45);
+            entity.Property(e => e.Password).HasMaxLength(128);
         });
     }
 

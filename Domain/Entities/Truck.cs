@@ -1,6 +1,8 @@
-﻿namespace Dal;
+﻿using Domain.Interfaces;
 
-public partial class Truck
+namespace Dal;
+
+public partial class Truck : IEntity
 {
     public string Number { get; set; } = null!;
 

@@ -1,6 +1,8 @@
-﻿namespace Dal;
+﻿using Domain.Interfaces;
 
-public partial class Order
+namespace Dal;
+
+public partial class Order : IEntity
 {
     public string Guid { get; set; } = null!;
 
