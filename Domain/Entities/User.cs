@@ -18,7 +18,7 @@ public partial class User : IEntity
         _password = password;
     }
 
-    public string PartOfSalt { get; } = null!;
+    public string DynamicPartOfSalt { get; } = null!;
     
     public string Login { get; set; } = null!;
 
@@ -27,26 +27,20 @@ public partial class User : IEntity
         get => _password;
         set
         {
-            var newPasswordInBytes = Encoding.UTF8.GetBytes(value);
-            var saltyNewPasswordInBytes = CalculateSaltedBytes(newPasswordInBytes);
-            var sha256OfSaltyNewPassword = SHA512.HashData(saltyNewPasswordInBytes);
+            var sha256OfSaltyNewPassword = SHA512.HashData(GetSaltedBytes(value));
             
             var stringBuilder = new StringBuilder();
             
-            foreach (var b in sha256OfNewPassword)
+            foreach (var b in sha256OfSaltyNewPassword)
                 stringBuilder.Append(b.ToString("x2"));
 
             _password = stringBuilder.ToString();
         }
     }
 
-    private byte[] CalculateSaltedBytes(byte[] source)
+    private byte[] GetSaltedBytes(string source)
     {
-        var salt = CalculateSalt();
-        
-        var saltedBytes = new byte[source.Length + salt.Length];
-        source.CopyTo(saltedBytes, 0);
-        salt.CopyTo(saltedBytes, source.Length);
+        var saltedBytes = Encoding.UTF8.GetBytes(source + StaticPartOfSalt + Login + source + DynamicPartOfSalt + Login);
     
         foreach (var b in saltedBytes)
         {
@@ -58,8 +52,6 @@ public partial class User : IEntity
 
         return saltedBytes;
     }
-
-    private byte[] CalculateSalt() => Encoding.UTF8.GetBytes(PartOfSalt + Login);
 
     public string Name { get; set; } = null!;
 
