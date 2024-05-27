@@ -6,7 +6,19 @@ namespace Dal;
 
 public partial class User : IEntity
 {
-    public string Salt { get; set; } = null!;
+    public User()
+    {
+        PartOfSalt = RandomNumberGenerator.GetHexString(128);
+    }
+
+    // Constructor for EF
+    private User(string partOfSalt, string password)
+    {
+        PartOfSalt = PartOfSalt;
+        _password = password;
+    }
+
+    public string PartOfSalt { get; } = null!;
     
     public string Login { get; set; } = null!;
 
@@ -16,7 +28,8 @@ public partial class User : IEntity
         set
         {
             var newPasswordInBytes = Encoding.UTF8.GetBytes(value);
-            var sha256OfNewPassword = SHA512.HashData(newPasswordInBytes);
+            var saltyNewPasswordInBytes = CalculateSaltedBytes(newPasswordInBytes);
+            var sha256OfSaltyNewPassword = SHA512.HashData(saltyNewPasswordInBytes);
             
             var stringBuilder = new StringBuilder();
             
@@ -26,6 +39,27 @@ public partial class User : IEntity
             _password = stringBuilder.ToString();
         }
     }
+
+    private byte[] CalculateSaltedBytes(byte[] source)
+    {
+        var salt = CalculateSalt();
+        
+        var saltedBytes = new byte[source.Length + salt.Length];
+        source.CopyTo(saltedBytes, 0);
+        salt.CopyTo(saltedBytes, source.Length);
+    
+        foreach (var b in saltedBytes)
+        {
+            if (b < 127)
+                b += 43;
+            else
+                b -= 21;
+        }
+
+        return saltedBytes;
+    }
+
+    private byte[] CalculateSalt() => Encoding.UTF8.GetBytes(PartOfSalt + Login);
 
     public string Name { get; set; } = null!;
 
