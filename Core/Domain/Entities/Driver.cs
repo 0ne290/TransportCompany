@@ -1,8 +1,6 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 
-namespace Dal;
+namespace Domain.Entities;
 
 public partial class Driver : IEntity
 {

@@ -11,11 +11,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <Folder Include="Daos\" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Daos\" />
+      <ProjectReference Include="..\..\Core\Domain\Domain.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using Domain.Interfaces;
 
-namespace Dal;
+namespace Domain.Entities;
 
 public partial class Order : IEntity
 {

@@ -1,6 +1,5 @@
 using Dal;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
 
 namespace Web;
 
