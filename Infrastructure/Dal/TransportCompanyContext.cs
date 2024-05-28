@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dal;
 
-public class TransportCompanyContext : DbContext
+public sealed class TransportCompanyContext : DbContext
 {
     public TransportCompanyContext(DbContextOptions<TransportCompanyContext> options) : base(options) => Database.EnsureCreated();
     
@@ -72,6 +73,8 @@ public class TransportCompanyContext : DbContext
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("DriverGuid");
         });
+        modelBuilder.Entity<Truck>().ToTable(b => b.HasCheckConstraint("CHK_TypeAdr",
+            "TypeAdr = 'EXII' OR TypeAdr = 'EXIII' OR TypeAdr = 'FL' OR TypeAdr = 'AT' OR TypeAdr = 'MEMU'"));
 
         modelBuilder.Entity<User>(entity =>
         {
@@ -79,22 +82,22 @@ public class TransportCompanyContext : DbContext
 
             entity.ToTable("user");
 
-            entity.HasIndex(e => e.Login, "Login_UNIQUE").IsUnique();
-            entity.HasIndex(e => e.Password, "Sha256OfPassword_UNIQUE").IsUnique();
+            entity.HasIndex(e => e.Password, "Password_UNIQUE").IsUnique();
 
             entity.Property(e => e.Login).HasMaxLength(45);
             entity.Property(e => e.Contact).HasMaxLength(45);
             entity.Property(e => e.DefaultAddress).HasMaxLength(45);
             entity.Property(e => e.Name).HasMaxLength(45);
             entity.Property(e => e.Password).HasMaxLength(128);
+            entity.Property(e => e.DynamicPartOfSalt).HasMaxLength(128);
         });
     }
 
-    public virtual DbSet<Driver> Drivers { get; set; }
+    public DbSet<Driver> Drivers { get; set; } = null!;
 
-    public virtual DbSet<Order> Orders { get; set; }
+    public DbSet<Order> Orders { get; set; } = null!;
 
-    public virtual DbSet<Truck> Trucks { get; set; }
+    public DbSet<Truck> Trucks { get; set; } = null!;
 
-    public virtual DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; set; } = null!;
 }

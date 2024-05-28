@@ -1,5 +1,6 @@
 using Dal;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web;
 
@@ -64,6 +65,7 @@ internal static class Program
             httpContext.Response.Redirect("login/administrator");
             return await Task.FromResult(false);
         });
+        app.UseCoreAdminCustomUrl("admin");
 
         await app.RunAsync();
     }

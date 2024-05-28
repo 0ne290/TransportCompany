@@ -1,8 +1,6 @@
-﻿using Domain.Interfaces;
+﻿namespace Domain.Entities;
 
-namespace Domain.Entities;
-
-public partial class Truck : IEntity
+public class Truck
 {
     public string Number { get; set; } = null!;
 

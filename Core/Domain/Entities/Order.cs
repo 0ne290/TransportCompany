@@ -1,12 +1,22 @@
-﻿using Domain.Interfaces;
+﻿namespace Domain.Entities;
 
-namespace Domain.Entities;
-
-public partial class Order : IEntity
+public class Order
 {
-    public string Guid { get; set; } = null!;
+    public Order()
+    {
+        Guid = System.Guid.NewGuid().ToString();
+        DateBegin = DateTime.Now;
+    }
 
-    public DateTime DateBegin { get; set; }
+    private Order(string guid, DateTime dateBegin)
+    {
+        Guid = guid;
+        DateBegin = dateBegin;
+    }
+    
+    public string Guid { get; } = null!;
+
+    public DateTime DateBegin { get; }
 
     public DateTime? DateEnd { get; set; }
 

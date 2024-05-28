@@ -2,9 +2,19 @@
 
 namespace Domain.Entities;
 
-public partial class Driver : IEntity
+public partial class Driver
 {
-    public string Guid { get; set; } = null!;
+    public Driver()
+    {
+        Guid = System.Guid.NewGuid().ToString();
+    }
+
+    private Driver(string guid)
+    {
+        Guid = guid;
+    }
+    
+    public string Guid { get; } = null!;
 
     public string Name { get; set; } = null!;
 

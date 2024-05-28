@@ -1,20 +1,19 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using Domain.Interfaces;
 
 namespace Domain.Entities;
 
-public partial class User : IEntity
+public class User
 {
     public User()
     {
-        PartOfSalt = RandomNumberGenerator.GetHexString(128);
+        DynamicPartOfSalt = RandomNumberGenerator.GetHexString(128);
     }
 
     // Constructor for EF
-    private User(string partOfSalt, string password)
+    private User(string dynamicPartOfSalt, string password)
     {
-        PartOfSalt = PartOfSalt;
+        DynamicPartOfSalt = dynamicPartOfSalt;
         _password = password;
     }
 
@@ -38,20 +37,13 @@ public partial class User : IEntity
         }
     }
 
-    private byte[] GetSaltedBytes(string source)
-    {
-        var saltedBytes = Encoding.UTF8.GetBytes(source + StaticPartOfSalt + Login + source + DynamicPartOfSalt + Login);
-    
-        foreach (var b in saltedBytes)
+    private byte[] GetSaltedBytes(string source) => Encoding.UTF8
+        .GetBytes(source + StaticPartOfSalt + Login + source + DynamicPartOfSalt + Login).Select(b =>
         {
             if (b < 127)
-                b += 43;
-            else
-                b -= 21;
-        }
-
-        return saltedBytes;
-    }
+                return (byte)(b + 43);
+            return (byte)(b - 21);
+        }).ToArray();
 
     public string Name { get; set; } = null!;
 
@@ -61,5 +53,7 @@ public partial class User : IEntity
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    private string _password;
+    private string _password = null!;
+
+    private const string StaticPartOfSalt = "6d9ace9d25bca79be42c971f85a543b22dcee800101d9b39b9213741a5cdcf147b853dc142fa761f66b6cffb50e1a3c5183ae78013124fa58ff41a6edfc6e969";
 }
