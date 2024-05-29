@@ -1,8 +1,6 @@
-﻿using Domain.Interfaces;
+﻿namespace Domain.Entities;
 
-namespace Domain.Entities;
-
-public partial class Driver
+public class Driver
 {
     public Driver()
     {

@@ -1,4 +1,6 @@
+using Application.Interactors;
 using Dal;
+using Dal.Daos;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,17 +15,15 @@ internal static class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-        /*builder.Services.AddSingleton<DrinksVendingMachine>(serviceProvider =>
+        builder.Services.AddScoped<UserInteractor>(serviceProvider =>
         {
             var optionsBuilder = new DbContextOptionsBuilder<TransportCompanyContext>();
             var connectionString = serviceProvider.GetService<IConfiguration>()!.GetConnectionString("MySql")!;
 
-            var options = optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-                .Options;
+            var options = optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)).Options;
 
-            return new DrinksVendingMachine(new Dao<Drink>(new VendingContext(options)),
-                new Dao<Coin>(new VendingContext(options)));
-        });*/
+            return new UserInteractor(new UserDao(new TransportCompanyContext(options)));
+        });
         builder.Services.AddDbContext<TransportCompanyContext>((serviceProvider, options) =>
         {
             var connectionString = serviceProvider.GetService<IConfiguration>()!.GetConnectionString("MySql")!;
@@ -65,7 +65,7 @@ internal static class Program
             httpContext.Response.Redirect("login/administrator");
             return await Task.FromResult(false);
         });
-        app.UseCoreAdminCustomUrl("admin");
+        app.UseCoreAdminCustomUrl("administrator");
 
         await app.RunAsync();
     }

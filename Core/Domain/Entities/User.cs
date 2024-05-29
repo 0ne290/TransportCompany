@@ -21,24 +21,22 @@ public class User
     
     public string Login { get; set; } = null!;
 
-    public string Password
-    {
-        get => _password;
-        set
-        {
-            var sha256OfSaltyNewPassword = SHA512.HashData(GetSaltedBytes(value));
-            
-            var stringBuilder = new StringBuilder();
-            
-            foreach (var b in sha256OfSaltyNewPassword)
-                stringBuilder.Append(b.ToString("x2"));
+    public string Password { get => _password; set => _password = Hash(value); }
 
-            _password = stringBuilder.ToString();
-        }
+    public string Hash(string value)
+    {
+        var sha256OfSaltyNewPassword = SHA512.HashData(Salt(value));
+            
+        var stringBuilder = new StringBuilder();
+            
+        foreach (var b in sha256OfSaltyNewPassword)
+            stringBuilder.Append(b.ToString("x2"));
+
+        return stringBuilder.ToString();
     }
 
-    private byte[] GetSaltedBytes(string source) => Encoding.UTF8
-        .GetBytes(source + StaticPartOfSalt + Login + source + DynamicPartOfSalt + Login).Select(b =>
+    private byte[] Salt(string value) => Encoding.UTF8
+        .GetBytes(value + StaticPartOfSalt + Login + value + DynamicPartOfSalt + Login).Select(b =>
         {
             if (b < 127)
                 return (byte)(b + 43);
