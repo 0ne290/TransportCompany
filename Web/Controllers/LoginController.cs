@@ -1,4 +1,5 @@
 using Application.Interactors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -13,6 +14,7 @@ public class LoginController(UserInteractor userInteractor) : Controller
         return View("User");
     }
 
+    [Authorize()]
     [HttpGet]
     [Route("administrator")]
     public IActionResult GetAdministrator()

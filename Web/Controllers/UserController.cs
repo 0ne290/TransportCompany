@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -10,14 +11,15 @@ public class UserController : Controller
     //    _logger = logger;
     //}
     
+    [Authorize(Roles = "User")]
     [HttpGet]
-    [Route("user")]
+    [Route("home")]
     public IActionResult GetUser()
     {
-        return View();
+        return Ok();
     }
 
-    [HttpGet]
+    /*[HttpGet]
     [Route("administrator")]
     public IActionResult GetAdministrator()
     {
@@ -36,5 +38,5 @@ public class UserController : Controller
     public IActionResult PostAdministrator(string login, string password)
     {
         return View();
-    }
+    }*/
 }

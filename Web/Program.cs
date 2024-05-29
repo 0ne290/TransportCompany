@@ -2,7 +2,9 @@ using Application.Interactors;
 using Dal;
 using Dal.Daos;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Web.Middlewares;
 
 namespace Web;
 
@@ -15,6 +17,7 @@ internal static class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+        builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
         builder.Services.AddScoped<UserInteractor>(serviceProvider =>
         {
             var optionsBuilder = new DbContextOptionsBuilder<TransportCompanyContext>();
@@ -62,7 +65,7 @@ internal static class Program
             if (httpContext.User.IsInRole("Administrator"))
                 return await Task.FromResult(true);
             
-            httpContext.Response.Redirect("login/administrator");
+            httpContext.Response.Redirect("/login/administrator");
             return await Task.FromResult(false);
         });
         app.UseCoreAdminCustomUrl("administrator");
