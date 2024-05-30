@@ -13,13 +13,6 @@ internal static class Program
 {
     private static async Task Main(string[] args)
     {
-        var x = new User();
-        Console.WriteLine(x.Hash("Ee2"));
-        x.Login = "One290";
-        Console.WriteLine(x.Hash("Ee2"));
-        
-        return;
-        
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
