@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization.Policy;
 
 namespace Web.Middlewares;
 
-public class CustomAuthorizationMiddlewareResultHandler : IAuthorizationMiddlewareResultHandler
+public class RedirectAfterFailedAuthentication : IAuthorizationMiddlewareResultHandler
 {
     public async Task HandleAsync(RequestDelegate next, HttpContext context, AuthorizationPolicy policy, PolicyAuthorizationResult authorizeResult)
     {

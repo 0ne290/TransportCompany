@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using Application.Interactors;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
@@ -13,8 +15,7 @@ public class LoginController(UserInteractor userInteractor) : Controller
     {
         return View("User");
     }
-
-    [Authorize()]
+    
     [HttpGet]
     [Route("administrator")]
     public IActionResult GetAdministrator()
@@ -27,21 +28,31 @@ public class LoginController(UserInteractor userInteractor) : Controller
     [Route("user")]
     public async Task<IActionResult> PostUser(string login, string password)// Тогда действия входа должны возвращать 200 или 400. Если 200, то JavaScript-код на клиенте сам выполнит переадресацию. Если 400 - встроит в документ сообщение о неправильном вводе
     {
-        if (await userInteractor.Login(login, password))
-        {
-            return Redirect("user");
-        }
-        return BadRequest();
+        if (!await userInteractor.Login(login, password))
+            return BadRequest();
+        
+        var claims = new[] { new Claim(ClaimTypes.Name, login), new Claim(ClaimTypes.Role, "User") };
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+            
+        return Redirect("user");
     }
     
     [HttpPost]
     [Route("administrator")]
-    public IActionResult PostAdministrator(string login, string password)
+    public async Task<IActionResult> PostAdministrator(string login, string password)
     {
-        if (login == "nimda" && password == "4202drowssap")
-        {
-            return Redirect("administrator");
-        }
-        return BadRequest();
+        if (login != "nimda" || password != "4202drowssap")
+            return BadRequest();
+        
+        var claims = new[] { new Claim(ClaimTypes.Role, "Administrator") };
+        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+            
+        return Redirect("administrator");
     }
 }

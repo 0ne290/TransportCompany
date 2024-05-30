@@ -5,11 +5,11 @@
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>@ViewData["Title"] - Web</title>
-        <link rel="stylesheet" href="/css/style.css">
+        @await RenderSectionAsync("Links", false)
     </head>
     
 <body>
-<header>@await RenderSectionAsync("Header")</header>
+<header>@await RenderSectionAsync("Header", false)</header>
 		    
 <main>
 	@RenderBody()

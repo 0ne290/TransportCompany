@@ -17,7 +17,7 @@ internal static class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-        builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
+        builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, RedirectAfterFailedAuthentication>();
         builder.Services.AddScoped<UserInteractor>(serviceProvider =>
         {
             var optionsBuilder = new DbContextOptionsBuilder<TransportCompanyContext>();
