@@ -37,7 +37,7 @@ public class LoginController(UserInteractor userInteractor) : Controller
             
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
             
-        return Redirect("user");
+        return Redirect("/user");
     }
     
     [HttpPost]
@@ -53,6 +53,6 @@ public class LoginController(UserInteractor userInteractor) : Controller
             
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
             
-        return Redirect("administrator");
+        return Redirect("/administrator");
     }
 }

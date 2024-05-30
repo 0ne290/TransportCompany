@@ -8,7 +8,11 @@ public class UserInteractor(IUserDao userDao) : IDisposable, IAsyncDisposable
     {
         var user = await userDao.GetByLogin(login);
 
-        return user != null && user.Hash(password) == user.Password;
+        var x = user.Hash(password);
+        Console.WriteLine(x);
+        Console.WriteLine(user.Password);
+
+        return user != null && x == user.Password;
     }
 
     public void Dispose()

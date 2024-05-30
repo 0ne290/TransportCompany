@@ -1,6 +1,7 @@
 using Application.Interactors;
 using Dal;
 using Dal.Daos;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,13 @@ internal static class Program
 {
     private static async Task Main(string[] args)
     {
+        var x = new User();
+        Console.WriteLine(x.Hash("Ee2"));
+        x.Login = "One290";
+        Console.WriteLine(x.Hash("Ee2"));
+        
+        return;
+        
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
@@ -62,11 +70,10 @@ internal static class Program
         {
             var httpContext = serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext!;
             
-            if (httpContext.User.IsInRole("Administrator"))
-                return await Task.FromResult(true);
+            if (!httpContext.User.IsInRole("Administrator"))
+                httpContext.Response.Redirect("/login/administrator");
             
-            httpContext.Response.Redirect("/login/administrator");
-            return await Task.FromResult(false);
+            return await Task.FromResult(true);
         });
         app.UseCoreAdminCustomUrl("administrator");
 
