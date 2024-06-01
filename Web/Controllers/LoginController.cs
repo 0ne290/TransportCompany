@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers;
 
 [Route("login")]
-public class LoginController(UserInteractor userInteractor) : Controller
+public class LoginController(UserInteractor userInteractor, ILogger logger) : Controller
 {
     [HttpGet]
     [Route("user")]
@@ -39,10 +39,11 @@ public class LoginController(UserInteractor userInteractor) : Controller
         if (remember == "yes")
             authProperties = new AuthenticationProperties
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(2),
                 IsPersistent = true
             };
         else if (remember != "no")
+            logger.LogWarning("\"{remember}\" value of the \"remember\" parameter is invalid", remember);
             
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
             
@@ -51,7 +52,7 @@ public class LoginController(UserInteractor userInteractor) : Controller
     
     [HttpPost]
     [Route("administrator")]
-    public async Task<IActionResult> PostAdministrator(string login, string password, string remember)
+    public async Task<IActionResult> PostAdministrator(string login, string password, string remember)// В идеале remember должен быть bool, а все входные данные действий должны быть ViewModel. Тогда не придется каждый раз валидировать формат входных данных и они будут стандартизированы между фронтом и бэком, т. к. ASP.NET сам будет следить, чтобы форматы на фронте и на бэке совпадали - минимизация кода и вероятности облажаться и проще вносить изменения
     {
         if (login != "nimda" || password != "4202drowssap")
             return BadRequest();
@@ -59,8 +60,18 @@ public class LoginController(UserInteractor userInteractor) : Controller
         var claims = new[] { new Claim(ClaimTypes.Role, "Administrator") };
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+        AuthenticationProperties? authProperties = null;
+        if (remember == "yes")
+            authProperties = new AuthenticationProperties
+            {
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(2),
+                IsPersistent = true
+            };
+        else if (remember != "no")
+            logger.LogWarning("\"{remember}\" value of the \"remember\" parameter is invalid", remember);
             
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
             
         return Redirect("/administrator");
     }
