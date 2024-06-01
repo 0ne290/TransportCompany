@@ -19,6 +19,7 @@ internal static class Program
     private static async Task Main(string[] args)
     {
         Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
             .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
@@ -64,7 +65,7 @@ internal static class Program
 
             var app = builder.Build();
             
-            app.UseMiddleware<RequestLoggingMiddleware>();
+            //app.UseMiddleware<RequestLoggingMiddleware>();
 
             app.UseSerilogRequestLogging();
 
