@@ -13,7 +13,6 @@ public class LoginController(UserInteractor userInteractor, ILogger<LoginControl
     [Route("user")]
     public IActionResult GetUser()
     {
-        throw new Exception();
         return View("User");
     }
     
