@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers;
 
 [Route("login")]
-public class LoginController(UserInteractor userInteractor, ILogger logger) : Controller
+public class LoginController(UserInteractor userInteractor, ILogger<LoginController> logger) : Controller
 {
     [HttpGet]
     [Route("user")]
@@ -52,7 +52,7 @@ public class LoginController(UserInteractor userInteractor, ILogger logger) : Co
     
     [HttpPost]
     [Route("administrator")]
-    public async Task<IActionResult> PostAdministrator(string login, string password, string remember)// В идеале remember должен быть bool, а все входные данные действий должны быть ViewModel. Тогда не придется каждый раз валидировать формат входных данных и они будут стандартизированы между фронтом и бэком, т. к. ASP.NET сам будет следить, чтобы форматы на фронте и на бэке совпадали - минимизация кода и вероятности облажаться и проще вносить изменения
+    public async Task<IActionResult> PostAdministrator(string login, string password, string remember)// В идеале remember должен быть bool, а все входные данные действий должны быть ViewModel с атрибутами данных, валидации и/или привязки. Если правильно использовать эти атрибуты, то ViewModel можно сделать самовалидирующимися и не понадобится загромождать действия контроллеров кодом валидации. Также в формах на клиенте должны быть tag-хэлперы, связывающие данные форм с входными параметрами действий контроллеров. Существуют еще и другие полезные хэлперы, например, выполняющие валидацию прямо на клиенте (но для них нужно дополнительно подключать JQuery-скрипты). Таким вот образом автоматизируется валидация в ASP.NET MVC
     {
         if (login != "nimda" || password != "4202drowssap")
             return BadRequest();

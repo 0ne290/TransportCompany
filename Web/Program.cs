@@ -32,13 +32,13 @@ internal static class Program
             .WriteTo.Async(a => a.File(new JsonFormatter(), @"E:\Logs\TransportCompany.log", retainedFileCountLimit: 4, rollOnFileSizeLimit: true, fileSizeLimitBytes: 5_368_709_120))// По умолчанию в файлы логируются обычные сообщения, но это можно исправить, передав в качестве первого параметра один из трех форматтеров - JsonFormatter, CompactJsonFormatter или RenderedCompactJsonFormatter - сравни результаты каждого из них в одном контексте
             
             .CreateLogger();
-
+        
         try
         {
-            Log.Information("Starting web application");
+            Log.Information("Starting host build");
             
             var builder = WebApplication.CreateBuilder(args);
-
+            
             // Add services to the container.
             builder.Services.AddSerilog();
             builder.Services.AddControllersWithViews();
@@ -65,17 +65,17 @@ internal static class Program
 
             var app = builder.Build();
             
+            app.UseSerilogRequestLogging();
+            app.UseMiddleware<ExceptionLoggingMiddleware>();
             //app.UseMiddleware<RequestLoggingMiddleware>();
 
-            app.UseSerilogRequestLogging();
-
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            //if (!app.Environment.IsDevelopment())
+            //{
+            //    app.UseExceptionHandler("/Home/Error");
+            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            //    app.UseHsts();
+            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -99,12 +99,14 @@ internal static class Program
                 return await Task.FromResult(true);
             });
             app.UseCoreAdminCustomUrl("administrator");
+            
+            Log.Information("Success to build host. Starting web application");
 
             await app.RunAsync();
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, "Application terminated unexpectedly");
+            Log.Fatal(ex, "Failed to build host");
         }
         finally
         {
