@@ -10,7 +10,7 @@ public class ExceptionLoggingMiddleware(RequestDelegate next, ILogger<ExceptionL
         }
         catch (Exception ex)
         {
-            logger.LogCritical(ex, "Critical application error");
+            logger.LogError(ex, "Application error");
         }
     }
 }
