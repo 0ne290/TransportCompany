@@ -19,7 +19,7 @@ internal static class Program
     private static async Task Main(string[] args)
     {
         Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
+            //.MinimumLevel.Debug()
             .MinimumLevel.Override("Microsoft.AspNetCore.Hosting", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Mvc", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft.AspNetCore.Routing", LogEventLevel.Warning)
@@ -42,7 +42,15 @@ internal static class Program
             // Add services to the container.
             builder.Services.AddSerilog();
             builder.Services.AddControllersWithViews();
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(b =>// Этот метод глобально конфигурует все авторизационные Cookie. Если в момент выдачи авторизационного Cookie клиенту для него не будет явно сконфигурирован какой-нибудь аспект с помощью AuthenticationProperties, то для этого аспекта будет принята глобальная конфигурация именно отсюда. Немного кастомной терминологии для удобства: дата истечения Cookie - дата, когда срок действия самого Cookie истечет и клиент его удалит; дата истечения авторизации Cookie - дата, после которой будет невозможно авторизоваться с помощью этого Cookie. Вывод из всего этого: Cookie может перестать быть авторизационным "пропуском" и стать, по сути, кучкой бесполезных байтов, но при этом он может все еще храниться на клиенте и продолжать приходить на сервер
+                {
+                    //b.SlidingExpiration = true;// По умолчанию true. Если true, то фреймворк автоматически сам будет обновлять срок действия авторизации всех получаемых Cookie, если он истек наполовину или больше. Если false, то срок действия авторизации Cookie обновляться не будет. Это свойство никак не влияет на Cookie.MaxAge (срок действия самого Cookie)
+                    b.ExpireTimeSpan = TimeSpan.FromMinutes(2);// Срок действия авторизации Cookie. По умолчанию он, вроде, "Сессионный" - юзер закрыл браузер, Cookie стал бесполезен
+                    b.Cookie.MaxAge = TimeSpan.FromMinutes(4);// Срок действия самого Cookie. По умолчанию он, вроде, "Сессионный" - юзер закрыл браузер, Cookie удалился
+                    //b.EventsType = typeof(SomethingEvent);// Вероятно, это свойство определяет обработчик, который будет вызываться после/перед события/событием "Создание Cookie"
+                    
+                });
             builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, RedirectAfterFailedAuthentication>();
             builder.Services.AddScoped<UserInteractor>(serviceProvider =>
             {

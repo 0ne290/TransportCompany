@@ -39,12 +39,13 @@ public class LoginController(UserInteractor userInteractor, ILogger<LoginControl
         if (remember == "yes")
             authProperties = new AuthenticationProperties
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(2),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
                 IsPersistent = true
             };
         else if (remember != "no")
             logger.LogWarning("\"{remember}\" value of the \"remember\" parameter is invalid", remember);
             
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
             
         return Redirect("/user");
@@ -65,12 +66,13 @@ public class LoginController(UserInteractor userInteractor, ILogger<LoginControl
         if (remember == "yes")
             authProperties = new AuthenticationProperties
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(2),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
                 IsPersistent = true
             };
         else if (remember != "no")
             logger.LogWarning("\"{remember}\" value of the \"remember\" parameter is invalid", remember);
             
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
             
         return Redirect("/administrator");
