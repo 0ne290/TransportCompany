@@ -39,7 +39,7 @@ public class LoginController(UserInteractor userInteractor, ILogger<LoginControl
         if (remember == "yes")
             authProperties = new AuthenticationProperties
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7),
                 IsPersistent = true
             };
         else if (remember != "no")
@@ -66,7 +66,7 @@ public class LoginController(UserInteractor userInteractor, ILogger<LoginControl
         if (remember == "yes")
             authProperties = new AuthenticationProperties
             {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(1),
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7),
                 IsPersistent = true
             };
         else if (remember != "no")
