@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Dal.Daos;
 
-public class UserDao(TransportCompanyContext dbContext, ILogger<UserDao> logger) : IUserDao
+public class UserDao(TransportCompanyContext dbContext, ILogger<UserDao> logger) : BaseDao(dbContext), IUserDao
 {
     public async Task<User?> GetByLogin(string login) => await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Login == login);
     
@@ -22,15 +22,5 @@ public class UserDao(TransportCompanyContext dbContext, ILogger<UserDao> logger)
             logger.LogWarning(ex, "Failed to add user {@user} to repository", user);
             return false;
         }
-    }
-    
-    public void Dispose()
-    {
-        dbContext.Dispose();
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await dbContext.DisposeAsync();
     }
 }
