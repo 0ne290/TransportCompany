@@ -1,42 +1,22 @@
+using Application.Interactors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers;
 
-[Route("user")]
-public class UserController : Controller
+[Authorize(Roles = "User")]
+[Route("user/orders")]
+public class UserController(UserInteractor userInteractor, ILogger<UserController> logger) : Controller
 {
-    //public UserController(ILogger<LoginController> logger)
-    //{
-    //    _logger = logger;
-    //}
-    
-    [Authorize(Roles = "User")]
     [HttpGet]
-    [Route("home")]
-    public IActionResult GetUser()
+    public IActionResult GetOrder()
     {
         return Ok();
     }
 
-    /*[HttpGet]
-    [Route("administrator")]
-    public IActionResult GetAdministrator()
-    {
-        return View();
-    }
-    
     [HttpPost]
-    [Route("user")]
-    public IActionResult PostUser()
+    public IActionResult PostOrder()
     {
-        return View();
+        return Ok();
     }
-
-    [HttpPost]
-    [Route("administrator")]
-    public IActionResult PostAdministrator(string login, string password)
-    {
-        return View();
-    }*/
 }

@@ -43,12 +43,12 @@ public class LoginController(UserInteractor userInteractor, ILogger<LoginControl
                 IsPersistent = true
             };
         else if (remember != "no")
-            logger.LogWarning("\"{remember}\" value of the \"remember\" parameter is invalid", remember);
+            logger.LogWarning("{remember} value of the remember parameter is invalid", remember);
             
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);
             
-        return Redirect("/user");
+        return Redirect("/user/orders");
     }
     
     [HttpPost]
@@ -70,7 +70,7 @@ public class LoginController(UserInteractor userInteractor, ILogger<LoginControl
                 IsPersistent = true
             };
         else if (remember != "no")
-            logger.LogWarning("\"{remember}\" value of the \"remember\" parameter is invalid", remember);
+            logger.LogWarning("{remember} value of the remember parameter is invalid", remember);
             
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authProperties);

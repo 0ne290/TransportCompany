@@ -1,3 +1,4 @@
+using Domain.Entities;
 using Domain.Interfaces;
 
 namespace Application.Interactors;
@@ -10,6 +11,14 @@ public class UserInteractor(IUserDao userDao) : IDisposable, IAsyncDisposable
 
         return user != null && user.Hash(password) == user.Password;
     }
+
+    public async Task<bool>
+        Registration(string login, string password, string name, string contact, string? defaultAddress) =>
+        await userDao.Create(new User
+        {
+            Login = login, Password = password, Name = name, Contact = contact,
+            DefaultAddress = defaultAddress == string.Empty ? null : defaultAddress
+        });
 
     public void Dispose()
     {
