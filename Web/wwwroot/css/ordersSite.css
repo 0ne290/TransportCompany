@@ -1,0 +1,43 @@
+body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.5rem;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+    min-height: 100vh;
+    min-width: 100vw;
+    background-color: #1a1f25;
+}
+
+.table {
+    width: 100%;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.table thead th {
+    padding: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: left;
+    color: #faeed0;
+    border-top: 2px solid #edc666;
+    border-bottom: 2px solid #edc666;
+}
+
+.table tbody :not(:first-child) td {
+    padding: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #faeed0;
+    border-top: 1px solid #edc666;
+}
+
+.table tbody :first-child td {
+    padding: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #faeed0;
+}

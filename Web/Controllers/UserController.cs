@@ -10,17 +10,17 @@ namespace Web.Controllers;
 public class UserController(UserInteractor userInteractor, ILogger<UserController> logger) : Controller
 {
     [HttpGet]
-    public IActionResult GetOrders()
+    public async Task<IActionResult> GetOrders()
     {
         var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
         
-        var orders = userInteractor.GetAllOrders(login);
+        var orders = await userInteractor.GetAllOrders(login);
         
-        return Ok();
+        return View("Orders", orders);
     }
 
     [HttpPost]
-    public IActionResult PostOrder()
+    public async Task<IActionResult> PostOrder()
     {
         return Ok();
     }

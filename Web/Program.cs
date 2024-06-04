@@ -60,7 +60,7 @@ internal static class Program
                 var options = optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
                     .Options;
 
-                return new UserInteractor(new UserDao(new TransportCompanyContext(options), serviceProvider.GetRequiredService<ILogger<UserDao>>()));
+                return new UserInteractor(new UserDao(new TransportCompanyContext(options), serviceProvider.GetRequiredService<ILogger<UserDao>>()), new OrderDao(new TransportCompanyContext(options)));
             });
             builder.Services.AddDbContext<TransportCompanyContext>((serviceProvider, options) =>
             {
