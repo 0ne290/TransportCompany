@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Application.Interactors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,12 @@ namespace Web.Controllers;
 public class UserController(UserInteractor userInteractor, ILogger<UserController> logger) : Controller
 {
     [HttpGet]
-    public IActionResult GetOrder()
+    public IActionResult GetOrders()
     {
+        var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
+        
+        var orders = userInteractor.GetAllOrders(login);
+        
         return Ok();
     }
 

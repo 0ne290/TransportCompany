@@ -1,4 +1,6 @@
+using System.Text.Json.Serialization.Metadata;
 using Application.Dtos;
+using Application.Mappers;
 using Domain.Entities;
 using Domain.Interfaces;
 
@@ -21,8 +23,13 @@ public class UserInteractor(IUserDao userDao, IOrderDao orderDao) : IDisposable,
             DefaultAddress = defaultAddress == string.Empty ? null : defaultAddress
         });
 
-    public async Task<IEnumerable<OrderResponseDto>> GetAllOrders(string login) =>
-        await orderDao.GetAllByUserLogin(login);
+    public async Task<IEnumerable<OrderResponseDto>> GetAllOrders(string login)
+    {
+        var orderMapper = new OrderMapper();
+        var orders = await orderDao.GetAllByUserLogin(login);
+        
+        return orders.Select(o => orderMapper.OrderToOrderResponseDto(o));
+    }
 
     public void Dispose()
     {
