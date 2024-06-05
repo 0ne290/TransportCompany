@@ -18,6 +18,8 @@ public class User
         _password = password;
     }
 
+    public override string ToString() => Login;
+
     public string DynamicPartOfSalt { get; } = null!;
     
     public string Login { get; set; } = null!;

@@ -2,6 +2,8 @@
 
 public class Truck
 {
+    public override string ToString() => Number;
+
     public string Number { get; set; } = null!;
 
     public string TypeAdr { get; set; } = null!;

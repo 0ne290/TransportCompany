@@ -11,7 +11,9 @@ public class Driver
     {
         Guid = guid;
     }
-    
+
+    public override string ToString() => Name;
+
     public string Guid { get; } = null!;
 
     public string Name { get; set; } = null!;
