@@ -32,7 +32,7 @@ public class Order
 
     public string TruckNumber { get; set; } = null!;
 
-    public virtual Truck TruckNumberNavigation { get; set; } = null!;
+    //public virtual Truck TruckNumberNavigation { get; set; } = null!;
 
-    public virtual User UserLoginNavigation { get; set; } = null!;
+    //public virtual User UserLoginNavigation { get; set; } = null!;
 }

@@ -76,16 +76,16 @@ public class UserInteractorTest
         
         _testOrders[0].UserLogin = _testUsers[0].Login;
         _testOrders[0].TruckNumber = _testTrucks[0].Number;
-        _testOrders[0].TruckNumberNavigation = _testTrucks[0];
-        _testOrders[0].UserLoginNavigation = _testUsers[0];
+        //_testOrders[0].TruckNumberNavigation = _testTrucks[0];
+        //_testOrders[0].UserLoginNavigation = _testUsers[0];
         _testOrders[1].UserLogin = _testUsers[1].Login;
         _testOrders[1].TruckNumber = _testTrucks[1].Number;
-        _testOrders[1].TruckNumberNavigation = _testTrucks[1];
-        _testOrders[1].UserLoginNavigation = _testUsers[1];
+        //_testOrders[1].TruckNumberNavigation = _testTrucks[1];
+        //_testOrders[1].UserLoginNavigation = _testUsers[1];
         _testOrders[2].UserLogin = _testUsers[2].Login;
         _testOrders[2].TruckNumber = _testTrucks[2].Number;
-        _testOrders[2].TruckNumberNavigation = _testTrucks[2];
-        _testOrders[2].UserLoginNavigation = _testUsers[2];
+        //_testOrders[2].TruckNumberNavigation = _testTrucks[2];
+        //_testOrders[2].UserLoginNavigation = _testUsers[2];
     }
     
     [Fact]
