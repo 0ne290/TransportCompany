@@ -28,11 +28,13 @@ public class Order
 
     public decimal CargoWeight { get; set; }
 
+    // Внешние ключи для навигационных свойств. Они не могут быть null и должны указывать на существующщие записи
     public string UserLogin { get; set; } = null!;
 
     public string TruckNumber { get; set; } = null!;
 
-    //public virtual Truck TruckNumberNavigation { get; set; } = null!;
+    // Навигационные свойства. Как видно, они могут быть null - с этим нелепым парадоксом приходится мириться, т. к. иначе будет невозможно создавать заказы в CoreAdmin. Решение - максимально минимизировать API Fluent и максимизировать Data Annotations
+    public virtual Truck? TruckNumberNavigation { get; set; }
 
-    //public virtual User UserLoginNavigation { get; set; } = null!;
+    public virtual User? UserLoginNavigation { get; set; }
 }

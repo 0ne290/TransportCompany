@@ -43,15 +43,15 @@ public sealed class TransportCompanyContext : DbContext
             entity.Property(e => e.TruckNumber).HasMaxLength(9);
             entity.Property(e => e.UserLogin).HasMaxLength(45);
 
-            //entity.HasOne(d => d.TruckNumberNavigation).WithMany(p => p.Orders)
-            //    .HasForeignKey(d => d.TruckNumber)
-            //    .OnDelete(DeleteBehavior.ClientSetNull)
-            //    .HasConstraintName("TruckNumber");
+           entity.HasOne(d => d.TruckNumberNavigation).WithMany(p => p.Orders)
+               .HasForeignKey(d => d.TruckNumber)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasConstraintName("TruckNumber");
 
-            //entity.HasOne(d => d.UserLoginNavigation).WithMany(p => p.Orders)
-            //    .HasForeignKey(d => d.UserLogin)
-            //    .OnDelete(DeleteBehavior.ClientSetNull)
-            //    .HasConstraintName("UserLogin");
+            entity.HasOne(d => d.UserLoginNavigation).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.UserLogin)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("UserLogin");
         });
 
         modelBuilder.Entity<Truck>(entity =>

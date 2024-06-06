@@ -109,38 +109,16 @@ public class UserInteractorTest
             Assert.True(expected[i].Equals(actual[i]));
     }
     
-    /*[Fact]
-    public async Task Xyz()
+    [Fact]
+    public async Task ResetDatabase()
     {
         var optionsBuilder = new DbContextOptionsBuilder<TransportCompanyContext>();
         const string connectionString = "Server=localhost;Database=TransportCompany;Uid=root;Pwd=!IgEcA21435=;";
-        var options = optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-            .Options;
+        var options = optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)).Options;
         await using var context = new TransportCompanyContext(options);
         await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
-        
-        var order = new Order
-        {
-            DateEnd = new DateTime(2002, 9, 10), Address = "234Something432", Price = 37,
-            CargoVolume = 73, CargoWeight = 21
-        };
-        var truck = new Truck
-        {
-            Number = "eubr5", TypeAdr = "EXII", VolumeMax = 35, WeightMax = 12, DriverGuid = null, Driver = null,
-        };
-        var user = new User
-        {
-            Login = "igru", Password = "234df", Name = "24gkojg", Contact = "122efhb", DefaultAddress = null,
-        };
-        order.UserLogin = user.Login;
-        order.TruckNumber = truck.Number;
-
-        await context.Trucks.AddAsync(truck);
-        await context.Users.AddAsync(user);
-        await context.Orders.AddAsync(order);
-        await context.SaveChangesAsync();
-    }*/
+    }
 
     private Order[] _testOrders = null!;
     
