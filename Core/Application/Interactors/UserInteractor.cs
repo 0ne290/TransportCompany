@@ -31,6 +31,13 @@ public class UserInteractor(IUserDao userDao, IOrderDao orderDao) : IDisposable,
         return orders.Select(o => orderMapper.OrderToOrderResponseDto(o));
     }
 
+    public async Task<string?> GetDefaultAddress(string login)
+    {
+        var user = await userDao.GetByLogin(login);
+
+        return user?.DefaultAddress;
+    }
+
     public void Dispose()
     {
         userDao.Dispose();
