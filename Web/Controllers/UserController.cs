@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Controllers;
 
 [Authorize(Roles = "User")]
-[Route("user/orders")]
+[Route("user")]
 public class UserController(UserInteractor userInteractor, ILogger<UserController> logger) : Controller
 {
     [HttpGet]
+    [Route("orders")]
     public async Task<IActionResult> GetOrders()
     {
         var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
@@ -18,9 +19,17 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
         
         return View("Orders", orders);
     }
+    
+    [HttpGet]
+    [Route("create-order")]
+    public async Task<IActionResult> GetCreateOrder()
+    {
+        return View("CreateOrder");
+    }
 
     [HttpPost]
-    public async Task<IActionResult> PostOrder()
+    [Route("create-order")]
+    public async Task<IActionResult> PostCreateOrder()
     {
         return Ok();
     }

@@ -1,0 +1,64 @@
+@* @model TModel *@
+
+@{
+    ViewBag.Title = "Create order";
+    Layout = "_Layout";
+}
+
+@section Links {
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+      <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="/css/loginSite.css">
+}
+
+<div class="wrapper">
+  <div class="header">
+    <h3 class="sign-in">Оформление<br>заказа</h3>
+    <a href="/user/orders"><div class="button">Вернуться к<br/>заказам</div></a>
+    <div class="clear"></div> 
+  </div>
+  <form action="", method="post">
+      <div>
+         <label class="user" for="text">
+           <svg viewBox="0 0 32 32">
+                    <g filter="">
+                      <use xlink:href="#man-people-user"></use>
+                    </g>
+                  </svg>
+         </label>
+        <input class="user-input" type="text" name="address" id="name" placeholder="Адрес доставки"  />
+      </div>
+    <div>
+             <label class="user" for="text">
+               <svg viewBox="0 0 32 32">
+                        <g filter="">
+                          <use xlink:href="#man-people-user"></use>
+                        </g>
+                      </svg>
+             </label>
+            <input class="user-input" type="text" name="cargoVolume" id="name" placeholder="Объем груза"  />
+    </div> 
+    <div>
+      <label class="user" for="text">
+        <svg viewBox="0 0 32 32">
+          <g filter="">
+            <use xlink:href="#man-people-user"></use>
+          </g>
+        </svg>
+      </label>
+      <input class="user-input" type="text" name="cargoWeight" id="name" placeholder="Вес груза"  />
+    </div>
+    <div>
+      <label class="user" for="text" title="Возможные значения: 1, 2.3, 3, 4.1, 4.2, 4.3, 5.1, 6.1, 8, 9">
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="150%" height="150%" viewBox="0 0 50 50" preserveAspectRatio="xMinYMin meet" style="position: relative; right: 5px; bottom:  4px">
+          <path style="stroke: white" d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 25 11 A 3 3 0 0 0 22 14 A 3 3 0 0 0 25 17 A 3 3 0 0 0 28 14 A 3 3 0 0 0 25 11 z M 21 21 L 21 23 L 22 23 L 23 23 L 23 36 L 22 36 L 21 36 L 21 38 L 22 38 L 23 38 L 27 38 L 28 38 L 29 38 L 29 36 L 28 36 L 27 36 L 27 21 L 26 21 L 22 21 L 21 21 z"></path>
+        </svg>
+      </label>
+                <input class="user-input" type="text" name="hazardClass" id="name" placeholder="Класс опасности груза"  />
+        </div>
+    <div>
+      <input type="submit" value="Оформить" />
+    </div>
+  </form>  
+</div>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
