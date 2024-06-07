@@ -1,4 +1,4 @@
-@* @model TModel *@
+@model string?
 
 @{
     ViewBag.Title = "Create order";
@@ -26,7 +26,7 @@
                     </g>
                   </svg>
          </label>
-        <input class="user-input" type="text" name="address" id="name" placeholder="Адрес доставки"  />
+        <input class="user-input" type="text" name="address" id="name" placeholder="Адрес доставки" value="@(Model ?? "")"/>
       </div>
     <div>
              <label class="user" for="text">
