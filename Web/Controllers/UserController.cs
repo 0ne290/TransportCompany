@@ -24,7 +24,11 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
     [Route("create-order")]
     public async Task<IActionResult> GetCreateOrder()
     {
-        return View("CreateOrder");
+        var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
+
+        var defaultAddress = userInteractor.GetDedaultAddress(login);
+    
+        return View("CreateOrder", defaultAddress);
     }
 
     [HttpPost]
