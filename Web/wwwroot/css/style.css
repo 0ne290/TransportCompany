@@ -181,3 +181,36 @@ input[type="radio"] {
     padding: 3px 0;
     cursor: pointer;
 }
+
+.table {
+    margin-top: 8vh;
+    width: 100%;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.table thead th {
+    padding: 10px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: left;
+    color: #faeed0;
+    border-top: 2px solid #edc666;
+    border-bottom: 2px solid #edc666;
+}
+
+.table tbody :not(:first-child) td {
+    padding: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #faeed0;
+    border-top: 1px solid #edc666;
+}
+
+.table tbody :first-child td {
+    padding: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #faeed0;
+}
