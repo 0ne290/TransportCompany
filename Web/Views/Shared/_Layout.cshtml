@@ -9,7 +9,7 @@
     </head>
     
 <body>
-<header>@await RenderSectionAsync("Header", false)</header>
+<header style="height: 5vh; display: flex"><div style="display: flex; justify-content: end; gap: 5%; width: 50%">@await RenderSectionAsync("Header", false)</div><div style="display: flex; justify-content: end; gap: 5%; width: 50%"><div style="width: 50%; background: #e6b333; color: #1a3373;"><a href="/registration/user">Регистрация</a></div><div style="width: 50%; background: #e6b333; color: #1a3373;"><a href="/login/user">Вход</a></div></div></header>
 		    
 <main>
 	@RenderBody()

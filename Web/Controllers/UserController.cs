@@ -26,7 +26,7 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
     {
         var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
 
-        var defaultAddress = userInteractor.GetDedaultAddress(login);
+        var defaultAddress = await userInteractor.GetDefaultAddress(login);
     
         return View("CreateOrder", defaultAddress);
     }
