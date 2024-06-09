@@ -49,7 +49,7 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
         var user = new UserRequestDto(oldLogin, password, name, contact,
             string.IsNullOrEmpty(defaultAddress) ? null : defaultAddress);
         
-        if (await userInteractor.Edit(login, user))
+        if (await userInteractor.Edit(oldLogin, user))
             return Redirect("/user/orders");
         
         return BadRequest();

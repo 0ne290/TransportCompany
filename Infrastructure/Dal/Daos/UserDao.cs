@@ -28,8 +28,8 @@ public class UserDao(TransportCompanyContext dbContext, ILogger<UserDao> logger)
     
     public async Task<bool> Update(string login, User newUser)
     {
-        var oldUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Login == login);
-            
+        var oldUser = await dbContext.Users.Include(user => user.Orders).AsNoTracking().FirstOrDefaultAsync(u => u.Login == login);
+           
         if (oldUser == null)
             return false;
         
@@ -43,7 +43,7 @@ public class UserDao(TransportCompanyContext dbContext, ILogger<UserDao> logger)
                 dbContext.Users.Remove(oldUser);
             }
             else
-                UserUpdater.UpdateUser(newUser, oldUser);
+                dbContext.Users.Update(newUser);
             
             await dbContext.SaveChangesAsync();
             return true;
