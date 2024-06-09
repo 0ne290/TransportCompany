@@ -30,7 +30,7 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
         var user = await userInteractor.GetUser(login);
         
         if (user != null)
-            return View("Orders", orders);
+            return View("Edit", user);
         
         logger.LogError("User with login {login} does not exist", login);
         return ActionResultFactory.CustomServerErrorView(this);

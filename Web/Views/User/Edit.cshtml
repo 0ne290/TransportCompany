@@ -64,8 +64,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute">
 
 <div class="wrapper">
   <div class="header">
-    <h3 class="sign-in">Регистрация<br>пользователя</h3>
-    <a href="/login/user"><div class="button">Вход</div></a>
+    <h3 class="sign-in">Редактирование</h3>
     <div class="clear"></div> 
   </div>
   <form action="", method="post">
@@ -77,7 +76,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute">
                     </g>
                   </svg>
          </label>
-        <input class="user-input" type="text" name="login" id="name" placeholder="Логин"  />
+        <input class="user-input" type="text" name="login" id="name" placeholder="Логин" value="@Model.Login"/>
       </div> 
       <div>
         <label class="lock" for="password">
@@ -97,7 +96,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute">
                         </g>
                       </svg>
              </label>
-            <input class="user-input" type="text" name="name" id="name" placeholder="ФИО"  />
+            <input class="user-input" type="text" name="name" id="name" placeholder="ФИО" value="@Model.Name"/>
     </div> 
     <div>
              <label class="user" for="text">
@@ -107,7 +106,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute">
                         </g>
                       </svg>
              </label>
-            <input class="user-input" type="text" name="contact" id="name" placeholder="Телефон / E-mail"  />
+            <input class="user-input" type="text" name="contact" id="name" placeholder="Телефон / E-mail" value="@Model.Contact"/>
     </div> 
     <div>
              <label class="user" for="text">
@@ -117,10 +116,10 @@ xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute">
                         </g>
                       </svg>
              </label>
-            <input class="user-input" type="text" name="defaultAddress" id="name" placeholder="Адрес доставок (необязательно)"  />
+            <input class="user-input" type="text" name="defaultAddress" id="name" placeholder="Адрес доставок (необязательно)" value="@(Model.DefaultAddress ?? "")"/>
     </div> 
     <div>
-      <input type="submit" value="Зарегистрироваться" />
+      <input type="submit" value="Изменить" />
     </div>
   </form>  
 </div>
