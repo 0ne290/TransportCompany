@@ -1,3 +1,4 @@
+using Application.Dtos;
 using Application.Interactors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +16,9 @@ public class RegistrationController(UserInteractor userInteractor) : Controller
     [HttpPost]
     public async Task<IActionResult> PostUser(string login, string password, string name, string contact, string defaultAddress)
     {
-        if (!await userInteractor.Registration(login, password, name, contact, defaultAddress))
+        if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(name) ||
+            string.IsNullOrEmpty(contact) || !await userInteractor.Registration(new UserRequestDto(login, password,
+                name, contact, string.IsNullOrEmpty(defaultAddress) ? null : defaultAddress)))
             return BadRequest();
         
         return Redirect("/login/user");

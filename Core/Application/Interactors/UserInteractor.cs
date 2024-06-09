@@ -15,17 +15,17 @@ public class UserInteractor(IUserDao userDao, IOrderDao orderDao) : IDisposable,
         return user != null && user.Hash(password) == user.Password;
     }
 
-    public async Task<bool>
-        Registration(string login, string password, string name, string contact, string? defaultAddress) =>
-        await userDao.Create(new User
-        {
-            Login = login, Password = password, Name = name, Contact = contact,
-            DefaultAddress = defaultAddress == string.Empty ? null : defaultAddress
-        });
+    public async Task<bool> Registration(UserRequestDto userDto)
+    {
+        var userMapper = new UserMapper();
+        
+        return await userDao.Create(userMapper.UserRequestDtoToUser(userDto));
+    }
 
     public async Task<IEnumerable<OrderResponseDto>> GetAllOrders(string login)
     {
         var orderMapper = new OrderMapper();
+        
         var orders = await orderDao.GetAllByUserLogin(login);
         
         return orders.Select(o => orderMapper.OrderToOrderResponseDto(o));
@@ -36,6 +36,15 @@ public class UserInteractor(IUserDao userDao, IOrderDao orderDao) : IDisposable,
         var user = await userDao.GetByLogin(login);
 
         return user?.DefaultAddress;
+    }
+
+    public async Task<UserResponseDto?> GetUser(string login)
+    {
+        var userMapper = new UserMapper();
+        
+        var user = await userDao.GetByLogin(login);
+
+        return user == null ? null : userMapper.UserToUserResponseDto(user);
     }
 
     public void Dispose()

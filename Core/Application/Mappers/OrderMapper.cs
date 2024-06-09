@@ -8,4 +8,6 @@ namespace Application.Mappers;
 public partial class OrderMapper
 {
     public partial OrderResponseDto OrderToOrderResponseDto(Order order);
+    
+    public partial Order OrderRequestDtoToOrder(OrderRequestDto order);
 }

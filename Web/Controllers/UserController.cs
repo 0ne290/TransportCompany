@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Application.Interactors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Web.ActionResults;
 
 namespace Web.Controllers;
 
@@ -12,6 +13,33 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
     [HttpGet]
     [Route("orders")]
     public async Task<IActionResult> GetOrders()
+    {
+        var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
+        
+        var orders = await userInteractor.GetAllOrders(login);
+        
+        return View("Orders", orders);
+    }
+    
+    [HttpGet]
+    [Route("edit")]
+    public async Task<IActionResult> GetEdit()
+    {
+        var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
+        
+        var user = await userInteractor.GetUser(login);
+        
+        if (user != null)
+            return View("Orders", orders);
+        
+        logger.LogError("User with login {login} does not exist", login);
+        return ActionResultFactory.CustomServerErrorView(this);
+
+    }
+    
+    [HttpPost]
+    [Route("edit")]
+    public async Task<IActionResult> PostEdit()
     {
         var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
         
