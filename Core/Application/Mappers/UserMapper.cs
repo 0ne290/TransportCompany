@@ -5,9 +5,9 @@ using Riok.Mapperly.Abstractions;
 namespace Application.Mappers;
 
 [Mapper]
-public partial class UserMapper
+public static partial class UserMapper
 {
-    public partial UserResponseDto UserToUserResponseDto(User user);
+    public static partial UserResponseDto UserToUserResponseDto(User user);
     
-    public partial User UserRequestDtoToUser(UserRequestDto user);
+    public static partial User UserRequestDtoToUser(UserRequestDto user);
 }

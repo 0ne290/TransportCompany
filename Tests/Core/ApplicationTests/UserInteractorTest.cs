@@ -1,9 +1,7 @@
 using Application.Interactors;
 using Application.Mappers;
-using Dal;
 using Domain.Entities;
 using Domain.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace ApplicationTests;
@@ -97,8 +95,7 @@ public class UserInteractorTest
         orderDaoMock.Setup(orderDao => orderDao.GetAllByUserLogin(It.IsAny<string>())).ReturnsAsync(_testOrders);
         
         var userInteractor = new UserInteractor(userDaoMock.Object, orderDaoMock.Object);
-        var orderMapper = new OrderMapper();
-        var expected = _testOrders.Select(o => orderMapper.OrderToOrderResponseDto(o)).ToList();
+        var expected = _testOrders.Select(OrderMapper.OrderToOrderResponseDto).ToList();
 
         // Act
         var actual = (await userInteractor.GetAllOrders(string.Empty)).ToList();
@@ -109,7 +106,7 @@ public class UserInteractorTest
             Assert.True(expected[i].Equals(actual[i]));
     }
     
-    [Fact]
+    /*[Fact]
     public async Task ResetDatabase()
     {
         var optionsBuilder = new DbContextOptionsBuilder<TransportCompanyContext>();
@@ -118,7 +115,7 @@ public class UserInteractorTest
         await using var context = new TransportCompanyContext(options);
         await context.Database.EnsureDeletedAsync();
         await context.Database.EnsureCreatedAsync();
-    }
+    }*/
 
     private Order[] _testOrders = null!;
     

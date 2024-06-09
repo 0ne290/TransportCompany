@@ -1,7 +1,5 @@
-using System.Text.Json.Serialization.Metadata;
 using Application.Dtos;
 using Application.Mappers;
-using Domain.Entities;
 using Domain.Interfaces;
 
 namespace Application.Interactors;
@@ -15,20 +13,17 @@ public class UserInteractor(IUserDao userDao, IOrderDao orderDao) : IDisposable,
         return user != null && user.Hash(password) == user.Password;
     }
 
-    public async Task<bool> Registration(UserRequestDto userDto)
-    {
-        var userMapper = new UserMapper();
-        
-        return await userDao.Create(userMapper.UserRequestDtoToUser(userDto));
-    }
+    public async Task<bool> Registration(UserRequestDto userDto) =>
+        await userDao.Create(UserMapper.UserRequestDtoToUser(userDto));
+
+    public async Task<bool> Edit(string login, UserRequestDto userDto) =>
+        await userDao.Update(login, UserMapper.UserRequestDtoToUser(userDto));
 
     public async Task<IEnumerable<OrderResponseDto>> GetAllOrders(string login)
     {
-        var orderMapper = new OrderMapper();
-        
         var orders = await orderDao.GetAllByUserLogin(login);
         
-        return orders.Select(o => orderMapper.OrderToOrderResponseDto(o));
+        return orders.Select(OrderMapper.OrderToOrderResponseDto);
     }
 
     public async Task<string?> GetDefaultAddress(string login)
@@ -40,11 +35,9 @@ public class UserInteractor(IUserDao userDao, IOrderDao orderDao) : IDisposable,
 
     public async Task<UserResponseDto?> GetUser(string login)
     {
-        var userMapper = new UserMapper();
-        
         var user = await userDao.GetByLogin(login);
 
-        return user == null ? null : userMapper.UserToUserResponseDto(user);
+        return user == null ? null : UserMapper.UserToUserResponseDto(user);
     }
 
     public void Dispose()

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Application.Dtos;
 using Application.Interactors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,13 +40,19 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
     
     [HttpPost]
     [Route("edit")]
-    public async Task<IActionResult> PostEdit()
+    public async Task<IActionResult> PostEdit(string login, string password, string name, string contact, string defaultAddress)
     {
-        var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
+        if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(contact))
+            return BadRequest();
         
-        var orders = await userInteractor.GetAllOrders(login);
+        var oldLogin = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
+        var user = new UserRequestDto(oldLogin, password, name, contact,
+            string.IsNullOrEmpty(defaultAddress) ? null : defaultAddress);
         
-        return View("Orders", orders);
+        if (await userInteractor.Edit(login, user))
+            return Redirect("/user/orders");
+        
+        return BadRequest();
     }
     
     [HttpGet]

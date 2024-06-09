@@ -57,7 +57,7 @@ internal static class Program
                 var optionsBuilder = new DbContextOptionsBuilder<TransportCompanyContext>();
                 var connectionString = serviceProvider.GetService<IConfiguration>()!.GetConnectionString("MySql")!;
 
-                var options = optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+                var options = optionsBuilder.UseLazyLoadingProxies().UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
                     .Options;
 
                 return new UserInteractor(new UserDao(new TransportCompanyContext(options), serviceProvider.GetRequiredService<ILogger<UserDao>>()), new OrderDao(new TransportCompanyContext(options)));

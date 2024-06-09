@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.Extensions;
 using Web.Pages;
 
 namespace Web.Middlewares;
