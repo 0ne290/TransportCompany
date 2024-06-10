@@ -74,24 +74,21 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
     [Route("create-order")]
     public async Task<IActionResult> PostCreateOrder(string address, decimal lengthInKilometers, decimal classAdr, decimal cargoVolume, decimal cargoWeight)
     {
-        var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
-        var order = new OrderRequestDto();
-
         try
         {
+            var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
+            var order = new OrderRequestDto(address, lengthInKilometers, classAdr, cargoVolume, cargoWeight, login);
             var result = await userInteractor.CreateOrder(order);
+            if (!result)
+            {
+                return Ok("Извините, но в данный момент нет фур, способных принять Ваш заказ. Обратитесь к диспетчеру: ");
+            }
+
+            return Redirect("/user/orders");
         }
-        catch (ArgumentException ex)
+        catch (ArgumentException _)
         {
-            return BadRequest();
+            return BadRequest("Неправильный формат входных данных");
         }
-        
-        
-        if (re)
-        {
-            
-        }
-        
-        return Ok();
     }
 }
