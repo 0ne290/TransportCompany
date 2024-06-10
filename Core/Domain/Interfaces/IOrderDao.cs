@@ -5,4 +5,6 @@ namespace Domain.Interfaces;
 public interface IOrderDao : IDisposable, IAsyncDisposable
 {
     Task<IEnumerable<Order>> GetAllByUserLogin(string userLogin);
+
+    Task Create(Order order);
 }

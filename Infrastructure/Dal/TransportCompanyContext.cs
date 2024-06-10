@@ -66,7 +66,10 @@ public sealed class TransportCompanyContext : DbContext
             entity.Property(e => e.DriverGuid).HasMaxLength(36);
             entity.Property(e => e.TypeAdr).HasMaxLength(45);
             entity.Property(e => e.VolumeMax).HasPrecision(56, 28);
+            entity.Property(e => e.VolumePrice).HasPrecision(56, 28);
             entity.Property(e => e.WeightMax).HasPrecision(56, 28);
+            entity.Property(e => e.WeightPrice).HasPrecision(56, 28);
+            entity.Property(e => e.PricePerKilometer).HasPrecision(56, 28);
 
             entity.HasOne(d => d.Driver).WithOne(p => p.Truck)
                 .HasForeignKey<Truck>(d => d.DriverGuid)

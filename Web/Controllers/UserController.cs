@@ -1,6 +1,8 @@
 using System.Security.Claims;
 using Application.Dtos;
 using Application.Interactors;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Web.ActionResults;
@@ -44,15 +46,17 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
     {
         if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(contact))
             return BadRequest();
-        
-        var oldLogin = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
-        var user = new UserRequestDto(oldLogin, password, name, contact,
+
+        var lodLogin = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
+        var user = new UserRequestDto(login, password, name, contact,
             string.IsNullOrEmpty(defaultAddress) ? null : defaultAddress);
+
+        if (!await userInteractor.Edit(lodLogin, user))
+            return BadRequest();
         
-        if (await userInteractor.Edit(oldLogin, user))
-            return Redirect("/user/orders");
-        
-        return BadRequest();
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return Redirect("/login/user");
+
     }
     
     [HttpGet]
@@ -68,8 +72,26 @@ public class UserController(UserInteractor userInteractor, ILogger<UserControlle
 
     [HttpPost]
     [Route("create-order")]
-    public async Task<IActionResult> PostCreateOrder()
+    public async Task<IActionResult> PostCreateOrder(string address, decimal lengthInKilometers, decimal classAdr, decimal cargoVolume, decimal cargoWeight)
     {
+        var login = HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
+        var order = new OrderRequestDto();
+
+        try
+        {
+            var result = await userInteractor.CreateOrder(order);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest();
+        }
+        
+        
+        if (re)
+        {
+            
+        }
+        
         return Ok();
     }
 }

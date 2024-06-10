@@ -1,4 +1,3 @@
-using Dal.Updaters;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -32,15 +31,15 @@ public class UserDao(TransportCompanyContext dbContext, ILogger<UserDao> logger)
            
         if (oldUser == null)
             return false;
-        
+            
         try
         {
             if (oldUser.Login != newUser.Login)
             {
                 await dbContext.Users.AddAsync(newUser);
+                dbContext.Users.Remove(oldUser);
                 foreach (var order in oldUser.Orders)
                     order.UserLogin = newUser.Login;
-                dbContext.Users.Remove(oldUser);
             }
             else
                 dbContext.Users.Update(newUser);

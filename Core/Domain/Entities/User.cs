@@ -24,7 +24,11 @@ public class User
     
     public string Login { get; set; } = null!;
 
-    public string Password { get => _password; set => _password = Hash(value); }
+    public string Password
+    {
+        get => _password;
+        set => _password = Hash(value);
+    }
 
     public string Hash(string value)
     {

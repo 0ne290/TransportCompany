@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Constants;
+
+namespace Domain.Entities;
 
 public class Order
 {
@@ -18,9 +20,31 @@ public class Order
 
     public DateTime DateBegin { get; }
 
-    public DateTime? DateEnd { get; set; }
+    public DateTime? DateEnd
+    {
+        get => _dateEnd;
+        set
+        {
+            _dateEnd = value;
+            if (TruckNumberNavigation != null)
+                TruckNumberNavigation.IsAvailable = true;
+        }
+    }
 
     public string Address { get; set; } = null!;
+    
+    public decimal LengthInKilometers { get; set; }
+
+    public decimal ClassAdr
+    {
+        get => _classAdr;
+        set
+        {
+            if (!ClassesAdr.ClassExists(value))
+                throw new ArgumentException($"{value} is not an class adr", nameof(value));
+            _classAdr = value;
+        }
+    }
 
     public decimal Price { get; set; }
 
@@ -37,4 +61,8 @@ public class Order
     public virtual Truck? TruckNumberNavigation { get; set; }
 
     public virtual User? UserLoginNavigation { get; set; }
+
+    private decimal _classAdr;
+
+    private DateTime? _dateEnd;
 }
